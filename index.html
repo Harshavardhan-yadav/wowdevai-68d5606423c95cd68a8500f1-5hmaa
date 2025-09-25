@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AttendIQ - Smart Attendance & Analytics Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://use.typekit.net/yjp3aho.css">
+  <style>
+    body { font-family: "sofia-pro", sans-serif; }
+    .neumorphic {
+      box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+    }
+    .dark .neumorphic {
+      box-shadow: 8px 8px 16px #1a1a1a, -8px -8px 16px #2e2e2e;
+    }
+    .nav-item.active {
+      @apply bg-blue-500 text-white;
+    }
+    .nav-item.active .lucide {
+      @apply text-white;
+    }
+    .nav-item:not(.active) {
+      @apply text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white;
+    }
+    .role-btn.active {
+      @apply bg-blue-500 text-white shadow-md;
+    }
+    .role-btn:not(.active) {
+      @apply text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+  
+  <!-- Sidebar -->
+  <div data-id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-900 shadow-lg z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+    <div class="h-full flex flex-col">
+      <!-- Logo -->
+      <div class="flex items-center justify-center h-16 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <i data-lucide="brain" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-gray-800 dark:text-white">AttendIQ</span>
+        </div>
+      </div>
+      
+      <!-- Profile Section -->
+      <div class="flex items-center space-x-3 p-4 border-b border-gray-200 dark:border-gray-700">
+        <img data-id="profile-picture" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Profile" class="w-10 h-10 rounded-full object-cover">
+        <div class="flex-1 min-w-0">
+          <p data-id="sidebar-user-name" class="text-sm font-medium text-gray-900 dark:text-white truncate">Alex Johnson</p>
+          <p data-id="sidebar-user-role" class="text-xs text-gray-500 dark:text-gray-400 truncate">Student</p>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 px-4 py-6 overflow-y-auto">
+        <ul class="space-y-2">
+          <li>
+            <a href="#" data-id="nav-dashboard" class="nav-item active flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="home" class="w-5 h-5 mr-3"></i>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-attendance" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="calendar-check" class="w-5 h-5 mr-3"></i>
+              Attendance
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-assignments" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="file-text" class="w-5 h-5 mr-3"></i>
+              Assignments
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-marks" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="bar-chart-3" class="w-5 h-5 mr-3"></i>
+              Marks
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-timetable" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="calendar" class="w-5 h-5 mr-3"></i>
+              Timetable
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-notifications" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="bell" class="w-5 h-5 mr-3"></i>
+              Notifications
+              <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-analytics" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="trending-up" class="w-5 h-5 mr-3"></i>
+              Analytics
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-locker" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="folder-lock" class="w-5 h-5 mr-3"></i>
+              Locker
+            </a>
+          </li>
+          <li>
+            <a href="#" data-id="nav-settings" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors">
+              <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
+              Settings
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Role Toggle -->
+      <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex">
+          <button data-id="student-role-btn" class="role-btn active flex-1 py-2 px-3 text-sm font-medium rounded-md transition-colors">
+            Student
+          </button>
+          <button data-id="faculty-role-btn" class="role-btn flex-1 py-2 px-3 text-sm font-medium rounded-md transition-colors">
+            Faculty
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div data-id="main-content" class="lg:ml-64 min-h-screen flex flex-col">
+    <!-- Top Navbar -->
+    <header class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
+      <div class="flex items-center justify-between px-6 py-4">
+        <button data-id="mobile-menu-btn" class="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <div class="flex-1 max-w-md mx-4 relative">
+          <input type="text" placeholder="Search..." class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="relative" data-id="notification-container">
+            <button data-id="notification-btn" class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+              <span data-id="notification-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center hidden">3</span>
+            </button>
+          </div>
+          
+          <button data-id="dark-mode-toggle" class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+            <i data-lucide="moon" class="w-5 h-5"></i>
+          </button>
+          
+          <div class="flex items-center space-x-3">
+            <img data-id="profile-picture" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+            <div class="hidden md:block">
+              <p data-id="header-user-name" class="text-sm font-medium text-gray-900 dark:text-white">Alex Johnson</p>
+              <p data-id="header-user-role" class="text-xs text-gray-500 dark:text-gray-400">Student</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6">
+      <!-- Welcome Banner -->
+      <div data-id="welcome-banner" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-2xl shadow-lg mb-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+        <div class="relative z-10">
+          <h1 data-id="welcome-title" class="text-3xl font-bold mb-2">Welcome back, Alex!</h1>
+          <p data-id="welcome-message" class="text-blue-100 mb-4">Here's your personalized dashboard overview.</p>
+          <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="calendar-check" class="w-5 h-5"></i>
+              <span data-id="banner-attendance" class="font-semibold">87.5% Attendance</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+              <span data-id="banner-assignments" class="font-semibold">4 Pending Assignments</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Dashboard -->
+      <div data-id="student-dashboard" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          
+          <!-- Attendance Card -->
+          <div data-id="attendance-card" class="group bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-green-200 dark:border-green-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="attendance-title" class="text-lg font-semibold text-gray-900 dark:text-white">Attendance Overview</h3>
+                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="calendar-check" class="w-5 h-5 text-white"></i>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span data-id="attendance-percentage" class="text-3xl font-bold text-green-600 dark:text-green-400">87.5%</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">This Semester</span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                  <div data-id="attendance-progress" class="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-300" style="width: 87.5%"></div>
+                </div>
+              </div>
+              
+              <div class="flex justify-around items-center border-t border-gray-200 dark:border-gray-700 pt-4">
+                <div class="text-center">
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white">152</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">Classes Attended</p>
+                </div>
+                <div class="text-center border-l border-gray-200 dark:border-gray-700 pl-6">
+                  <p class="text-2xl font-bold text-gray-900 dark:text-white">22</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">Classes Missed</p>
+                </div>
+              </div>
+              
+              <button data-id="view-attendance-btn" class="w-full mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 font-medium">
+                View Details
+              </button>
+              
+              <!-- Subject-wise attendance will be populated here -->
+              <div data-id="subject-attendance" class="mt-4 space-y-2">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Assignments Card -->
+          <div data-id="assignments-card" class="group bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-200 dark:border-blue-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="assignments-title" class="text-lg font-semibold text-gray-900 dark:text-white">Pending Assignments</h3>
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="clipboard-list" class="w-5 h-5 text-white"></i>
+                  <span data-id="assignment-count" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">4</span>
+                </div>
+              </div>
+              
+              <p data-id="assignments-subtitle" class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Don't miss your deadlines!
+              </p>
+              
+              <div class="space-y-3">
+                <div data-id="assignments-list">
+                  <!-- Populated by JavaScript -->
+                </div>
+              </div>
+              
+              <button data-id="view-all-assignments-btn" class="w-full mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 font-medium">
+                View All Assignments
+              </button>
+            </div>
+          </div>
+          
+          <!-- Marks Card -->
+          <div data-id="marks-card" class="group bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-200 dark:border-purple-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="marks-title" class="text-lg font-semibold text-gray-900 dark:text-white">Academic Performance</h3>
+                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="award" class="w-5 h-5 text-white"></i>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span data-id="cgpa-display" class="text-3xl font-bold text-purple-600 dark:text-purple-400">8.67</span>
+                  <span class="text-sm text-gray-500 dark:text-gray-400">CGPA</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="trending-up" class="w-4 h-4 text-green-500"></i>
+                  <span class="text-sm text-gray-600 dark:text-gray-400">On track for Dean's List</span>
+                </div>
+              </div>
+              
+              <div class="space-y-2">
+                <div data-id="marks-list">
+                  <!-- Populated by JavaScript -->
+                </div>
+              </div>
+              
+              <button data-id="view-grades-btn" class="w-full mt-4 px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors duration-200 font-medium">
+                View All Grades
+              </button>
+            </div>
+          </div>
+          
+          <!-- Timetable Card -->
+          <div data-id="timetable-card" class="group bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-orange-200 dark:border-orange-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="timetable-title" class="text-lg font-semibold text-gray-900 dark:text-white">Today's Schedule</h3>
+                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="calendar" class="w-5 h-5 text-white"></i>
+                </div>
+              </div>
+              
+              <div data-id="todays-schedule">
+                <!-- Populated by JavaScript -->
+              </div>
+              
+              <button data-id="view-full-timetable-btn" class="w-full mt-4 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors duration-200 font-medium">
+                View Full Timetable
+              </button>
+            </div>
+          </div>
+          
+          <!-- Recent Activities Card -->
+          <div data-id="recent-activities-card" class="group bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-red-200 dark:border-red-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="activities-title" class="text-lg font-semibold text-gray-900 dark:text-white">Recent Activities</h3>
+                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+                </div>
+              </div>
+              
+              <div data-id="recent-activities">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Analytics Overview Card -->
+          <div data-id="analytics-overview-card" class="lg:col-span-2 xl:col-span-1 group bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-teal-200 dark:border-teal-800">
+            <div class="p-6">
+              <h3 data-id="analytics-title" class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Performance Analytics</h3>
+              <div class="h-64 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+                <canvas id="attendanceChart" class="w-full h-full"></canvas>
+              </div>
+              <div class="mt-4 h-64 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+                <canvas id="performanceChart" class="w-full h-full"></canvas>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Faculty Dashboard -->
+      <div data-id="faculty-dashboard" class="space-y-6 hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          
+          <!-- Faculty Attendance Overview Card -->
+          <div data-id="faculty-attendance-card" class="lg:col-span-2 group bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-200 dark:border-blue-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="faculty-attendance-title" class="text-lg font-semibold text-gray-900 dark:text-white">Class Attendance Overview</h3>
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="users" class="w-5 h-5 text-white"></i>
+                </div>
+              </div>
+              
+              <div data-id="faculty-attendance-overview">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Pass Percentage Card -->
+          <div data-id="pass-percentage-card" class="group bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-green-200 dark:border-green-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="pass-percentage-title" class="text-lg font-semibold text-gray-900 dark:text-white">Average Pass Rate</h3>
+                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="trending-up" class="w-5 h-5 text-white"></i>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <span data-id="pass-percentage" class="text-4xl font-bold text-blue-600 dark:text-blue-400">87.5%</span>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Current Semester</p>
+              </div>
+              
+              <div data-id="pass-percentage-trend" class="flex items-center space-x-2 mb-4">
+                <div class="text-green-600 dark:text-green-400">↗ increasing (prev: 84.2%)</div>
+                <span class="text-sm text-gray-500 dark:text-gray-400">from last semester</span>
+              </div>
+              
+              <button data-id="view-pass-rate-details-btn" class="w-full mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 font-medium">
+                View Details
+              </button>
+            </div>
+          </div>
+          
+          <!-- Student Engagement Card -->
+          <div data-id="student-engagement-card" class="group bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-200 dark:border-purple-800">
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 data-id="engagement-title" class="text-lg font-semibold text-gray-900 dark:text-white">Student Engagement</h3>
+                <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                  <i data-lucide="message-square" class="w-5 h-5 text-white"></i>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <div class="h-48 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+                  <canvas id="engagementChart" class="w-full h-full"></canvas>
+                </div>
+              </div>
+              
+              <div data-id="student-engagement">
+                <!-- Populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Faculty Awards Card -->
+          <div data-id="faculty-awards">
+            <!-- Populated by JavaScript -->
+          </div>
+          
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Chatbot -->
+  <div data-id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+    <button data-id="chatbot-toggle-btn" class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full shadow-lg flex items-center justify-center text-white hover:scale-110 transition-transform">
+      <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </button>
+    
+    <div data-id="chatbot-window" class="hidden absolute bottom-16 right-0 w-80 h-96 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col">
+      <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+            <i data-lucide="bot" class="w-4 h-4 text-white"></i>
+          </div>
+          <span class="font-semibold text-gray-900 dark:text-white">AttendIQ Assistant</span>
+        </div>
+        <button data-id="chatbot-close-btn" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+          <i data-lucide="x" class="w-4 h-4 text-gray-500"></i>
+        </button>
+      </div>
+      
+      <div data-id="chatbot-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
+        <!-- Chat messages will be appended here -->
+        <div class="flex items-start space-x-2">
+          <div class="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <i data-lucide="bot" class="w-3 h-3 text-white"></i>
+          </div>
+          <div class="bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2 max-w-xs">
+            <p class="text-sm text-gray-900 dark:text-white">Hi! I'm your AttendIQ assistant. How can I help you today?</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex space-x-2">
+          <input type="text" data-id="chatbot-input" placeholder="Type your message..." class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button data-id="chatbot-send-btn" class="px-3 py-2 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-lg hover:opacity-90 transition-opacity">
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ID Card Modal -->
+  <div id="id-card-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full mx-4">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Digital Student ID</h3>
+        <p class="text-gray-500 dark:text-gray-400">Course Completion Verification</p>
+      </div>
+      
+      <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-6 text-white mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 data-id="id-card-student-name" class="font-bold text-lg">John Doe</h4>
+            <p data-id="id-card-roll-number" class="text-sm opacity-80">Roll No: CS2024001</p>
+          </div>
+          <img data-id="id-card-student-photo" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="Student Photo" class="w-16 h-16 rounded-full border-2 border-white">
+        </div>
+        
+        <div class="border-t border-white/20 pt-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-sm opacity-80">Course</p>
+              <p data-id="id-card-course-name" class="font-semibold">Computer Science</p>
+            </div>
+            <div class="w-16 h-16 bg-white rounded-lg flex items-center justify-center">
+              <i data-lucide="qr-code" class="w-8 h-8 text-gray-800"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <button data-id="download-id-btn" class="w-full bg-gradient-to-br from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+        Download Digital ID
+      </button>
+      
+      <button data-id="close-id-modal-btn" class="w-full mt-3 py-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
